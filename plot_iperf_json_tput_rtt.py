@@ -71,9 +71,9 @@ def get_results_of_testtype(test_type):
 
         if ((file.startswith("client") and  test_type == "baseline")
         or (file.startswith("insert-client") and test_type == "option-insert")
-        or (file.startswith("bpf-client") and test_type == "option-insert-parse")
-        or (file.startswith("bpf-sockopt-client") and test_type == "option-insert-parse-sockopt")):
-            # print(file)
+        or (file.startswith("insert-parseclient-") and test_type == "option-insert-parse")
+        or (file.startswith("insert-parse-sockopt-client-") and test_type == "option-insert-parse-sockopt")):
+            print(file)
             pass
         else:
             continue
@@ -112,15 +112,15 @@ def plot_box_graph():
 
     ####################
     print("plot bitrate")
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(figsize=(6, 3))
     ax.boxplot(data)
 
     ax.set_xticklabels(labels)
     # plt.xticks(rotation=45)
-    ax.set_ylim([0,30])
+    ax.set_ylim([20,40])
 
     # plt.xlabel(xlabel)
-    plt.ylabel('TCP Throughput Measured by iPerf3 (Gbps)')
+    plt.ylabel('TCP Throughput (Gbps)')
 
     plt.grid(linestyle='dotted')
     plt.tight_layout()
@@ -130,15 +130,15 @@ def plot_box_graph():
 
     ###################
     print("plot rtt")
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(figsize=(6, 3))
     ax.boxplot(rtt_data)
 
     ax.set_xticklabels(labels)
     # plt.xticks(rotation=45)
-    ax.set_ylim([0,100])
+    ax.set_ylim([20,40])
 
     # plt.xlabel(xlabel)
-    plt.ylabel('Round-Trip Time Measured by iPerf3 (micro-seconds)')
+    plt.ylabel('Round-Trip Time (micro-seconds)')
 
     plt.grid(linestyle='dotted')
     plt.tight_layout()
