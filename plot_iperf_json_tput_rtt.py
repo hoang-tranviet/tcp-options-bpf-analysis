@@ -25,7 +25,7 @@ except ImportError:
 
 parser = argparse.ArgumentParser(description="plot iperf test results from json")
 parser.add_argument('--expdir', '-d',
-                    help="Directory to store results",
+                    help="Directory which contains results",
                     default="")
 
 args = parser.parse_args()
@@ -51,7 +51,7 @@ def get_intervals(node):
 
 def get_each_testrun(test_run):
     # in Gbps
-    bitrate=float(test_run["end"]["streams"][0]["sender"]["bits_per_second"])/(1 << 30)
+    bitrate=float(test_run["end"]["streams"][0]["sender"]["bits_per_second"])/(1000000000)
     rtt    =float(test_run['end']['streams'][0]['sender']["mean_rtt"])
     return(bitrate, rtt)
 
@@ -71,7 +71,7 @@ def get_results_of_testtype(test_type):
 
         if ((file.startswith("client") and  test_type == "baseline")
         or (file.startswith("insert-client") and test_type == "option-insert")
-        or (file.startswith("insert-parseclient-") and test_type == "option-insert-parse")
+        or (file.startswith("insert-parse-client-") and test_type == "option-insert-parse")
         or (file.startswith("insert-parse-sockopt-client-") and test_type == "option-insert-parse-sockopt")):
             print(file)
             pass
@@ -117,7 +117,7 @@ def plot_box_graph():
 
     ax.set_xticklabels(labels)
     # plt.xticks(rotation=45)
-    ax.set_ylim([20,40])
+    ax.set_ylim([9,9.5])
 
     # plt.xlabel(xlabel)
     plt.ylabel('TCP Throughput (Gbps)')
@@ -135,13 +135,14 @@ def plot_box_graph():
 
     ax.set_xticklabels(labels)
     # plt.xticks(rotation=45)
-    ax.set_ylim([20,40])
+    ax.set_ylim([400,500])
 
     # plt.xlabel(xlabel)
     plt.ylabel('Round-Trip Time (micro-seconds)')
 
     plt.grid(linestyle='dotted')
     plt.tight_layout()
+    # plt.show()
 
     plt.savefig(exp_dir + 'overhead-rtt.pdf')
 
